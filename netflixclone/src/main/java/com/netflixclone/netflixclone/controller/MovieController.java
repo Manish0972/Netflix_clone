@@ -39,4 +39,17 @@ public class MovieController {
     public List<Movie> getMoviesByGenre(@PathVariable String genre) {
         return movieService.getMoviesByGenre(genre);
     }
+
+    @PutMapping("/{id}")
+        public Movie updateMovie(
+        @PathVariable Long id,
+        @Valid @RequestBody MovieDto movieDto) {
+
+    return movieService.updateMovie(id, movieDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMovie(@PathVariable Long id) {
+        movieService.deleteMovie(id);
+    }
 }
