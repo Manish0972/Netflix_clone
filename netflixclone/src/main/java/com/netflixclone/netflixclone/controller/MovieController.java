@@ -2,6 +2,9 @@ package com.netflixclone.netflixclone.controller;
 
 import com.netflixclone.netflixclone.entity.Movie;
 import com.netflixclone.netflixclone.service.MovieService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 import com.netflixclone.netflixclone.dto.MovieDto;
 
@@ -17,10 +20,10 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @PostMapping
-public Movie createMovie(@RequestBody MovieDto movieDto) {
-    return movieService.createMovie(movieDto);
-}
+   @PostMapping
+    public Movie createMovie(@Valid @RequestBody MovieDto movieDto) {
+        return movieService.createMovie(movieDto);
+    }
 
     @GetMapping
     public List<Movie> getAllMovies() {

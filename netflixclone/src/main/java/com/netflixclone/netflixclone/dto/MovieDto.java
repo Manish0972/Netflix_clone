@@ -1,13 +1,27 @@
 package com.netflixclone.netflixclone.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 public class MovieDto {
 
+    @NotBlank(message = "Title is required")
     private String title;
+
+    @NotBlank(message = "Description is required")
     private String description;
+
+    @NotBlank(message = "Genre is required")
     private String genre;
+
+    @Min(value = 1900, message = "Release year must be after 1900")
+    @Max(value = 2100, message = "Release year is invalid")
     private int releaseYear;
+
     private String thumbnailUrl;
     private String videoUrl;
+
 
     public String getTitle() {
         return title;
