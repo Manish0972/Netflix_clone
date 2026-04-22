@@ -5,6 +5,8 @@ import com.netflixclone.netflixclone.entity.Movie;
 import com.netflixclone.netflixclone.repository.MovieRepository;
 import com.netflixclone.netflixclone.service.MovieService;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -47,25 +49,35 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-public Movie updateMovie(Long id, MovieDto movieDto) {
+        public List<Movie> searchMovies(String keyword) {
+        return movieRepository.findByTitleContainingIgnoreCase(keyword);
+    }
+
+    @Override
+    public Movie updateMovie(Long id, MovieDto movieDto) {
 
     Movie movie = movieRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Movie not found"));
 
-    movie.setTitle(movieDto.getTitle());
-    movie.setDescription(movieDto.getDescription());
-    movie.setGenre(movieDto.getGenre());
-    movie.setReleaseYear(movieDto.getReleaseYear());
-    movie.setThumbnailUrl(movieDto.getThumbnailUrl());
-    movie.setVideoUrl(movieDto.getVideoUrl());
+         movie.setTitle(movieDto.getTitle());
+            movie.setDescription(movieDto.getDescription());
+            movie.setGenre(movieDto.getGenre());
+            movie.setReleaseYear(movieDto.getReleaseYear());
+            movie.setThumbnailUrl(movieDto.getThumbnailUrl());
+            movie.setVideoUrl(movieDto.getVideoUrl());
 
-    return movieRepository.save(movie);
-}
+            return movieRepository.save(movie);
+        }
 
     @Override
     public void deleteMovie(Long id) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
-        movieRepository.delete(movie);
+                movieRepository.delete(movie);
+            }
+
+    @Override
+    public Page<Movie> getMovies(int page, int size) {
+        return movieRepository.findAll(PageRequest.of(page, size));
     }
 }

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-NetflixcloneApplication<netflixclone>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.netflixclone.netflixclone.NetflixcloneApplication",
+            "projectName": "netflixclone",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
