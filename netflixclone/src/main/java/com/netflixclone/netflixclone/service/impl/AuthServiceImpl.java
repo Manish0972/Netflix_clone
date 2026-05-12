@@ -2,11 +2,14 @@ package com.netflixclone.netflixclone.service.impl;
 
 import com.netflixclone.netflixclone.entity.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.netflixclone.netflixclone.dto.LoginDto;
 import com.netflixclone.netflixclone.dto.RegisterDto;
 import com.netflixclone.netflixclone.repository.UserRepository;
+import com.netflixclone.netflixclone.security.JwtUtil;
 import com.netflixclone.netflixclone.service.AuthService;
 
 @Service
@@ -45,5 +48,20 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         return "User registered successfully";
+    }
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Override
+    public String login(LoginDto dto) {
+        user user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return "Login successful";
     }
 }
