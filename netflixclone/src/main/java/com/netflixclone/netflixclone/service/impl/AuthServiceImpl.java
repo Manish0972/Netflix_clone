@@ -20,9 +20,11 @@ public class AuthServiceImpl implements AuthService {
 
     // Constructor Injection (Best Practice)
     public AuthServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -50,18 +52,18 @@ public class AuthServiceImpl implements AuthService {
         return "User registered successfully";
     }
 
-    @Autowired
+   @Autowired
     private JwtUtil jwtUtil;
 
     @Override
     public String login(LoginDto dto) {
         user user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + dto.getEmail()));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
 
-        return "Login successful";
+        return jwtUtil.generateToken(user.getEmail());  
     }
 }

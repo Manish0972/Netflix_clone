@@ -1,5 +1,6 @@
 package com.netflixclone.netflixclone.controller;
 
+import com.netflixclone.netflixclone.dto.LoginDto;
 import com.netflixclone.netflixclone.dto.RegisterDto;
 import com.netflixclone.netflixclone.service.AuthService;
 
@@ -7,6 +8,9 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,5 +26,13 @@ public class AuthController  {
 
         return authService.register(dto);
     }
+
+    @PostMapping("/login")
+    public String login(
+            @Valid @RequestBody LoginDto dto) {
+
+        return authService.login(dto);
+    }
+
 
 }
